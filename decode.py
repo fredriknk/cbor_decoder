@@ -1,0 +1,49 @@
+import cbor2
+import hashlib
+from hashlib import sha256
+import uuid
+import json
+
+cbor_data = bytes([191, 97, 100, 167, 98, 85, 85, 80, 62, 146, 111, 117, 211, 27, 72, 82, 179, 148, 140, 19, 245, 168, 187, 110, 97, 67, 25, 15, 185, 98, 82, 83, 24, 35, 98, 83, 78, 24, 25, 98, 80, 76, 101, 50, 52, 50, 48, 50, 98, 84, 65, 100, 48, 65, 70, 50, 98, 67, 73, 104, 48, 50, 49, 52, 48, 66, 49, 54, 255])   
+cbor_data = bytes([191, 97, 100, 167, 98, 85, 85, 80, 62, 146, 111, 117, 211, 27, 72, 82, 179, 148, 140, 19, 245, 168, 187, 110, 97, 67, 26, 0, 27, 155, 43, 98, 82, 83, 24, 35, 98, 83, 78, 24, 25, 98, 80, 76, 101, 50, 52, 50, 48, 50, 98, 84, 65, 100, 48, 65, 70, 50, 98, 67, 73, 104, 48, 50, 49, 52, 48, 66, 49, 54, 97, 109, 133, 165, 97, 84, 250, 65, 194, 200, 183, 97, 72, 250, 65, 87, 236, 42, 97, 80, 250, 71, 195, 172, 132, 97, 71, 250, 70, 56, 127, 135, 97, 67, 25, 120, 75, 165, 97, 84, 250, 65, 194, 33, 117, 97, 72, 250, 65, 86, 15, 168, 97, 80, 250, 71, 195, 172, 156, 97, 71, 250, 68, 119, 78, 223, 97, 67, 
+26, 0, 5, 246, 152, 165, 97, 84, 250, 65, 194, 167, 135, 97, 72, 250, 65, 93, 151, 4, 97, 80, 250, 71, 195, 176, 147, 97, 71, 250, 68, 118, 128, 83, 97, 67, 26, 0, 11, 116, 230, 165, 97, 84, 250, 65, 195, 1, 1, 
+97, 72, 250, 65, 91, 217, 5, 97, 80, 250, 71, 195, 179, 227, 97, 71, 250, 68, 117, 229, 143, 97, 67, 26, 0, 16, 243, 52, 165, 97, 84, 250, 65, 195, 52, 63, 97, 72, 250, 65, 94, 77, 37, 97, 80, 250, 71, 195, 181, 83, 97, 71, 250, 68, 118, 115, 107, 97, 67, 26, 0, 22, 113, 129, 97, 98, 131, 164, 97, 65, 250, 128, 0, 0, 0, 97, 84, 250, 65, 194, 66, 176, 97, 86, 250, 64, 134, 89, 150, 97, 67, 25, 120, 89, 164, 97, 65, 250, 128, 0, 0, 0, 97, 84, 250, 65, 194, 66, 176, 97, 86, 250, 64, 134, 89, 150, 97, 67, 26, 0, 11, 116, 244, 164, 97, 65, 250, 128, 0, 0, 0, 97, 84, 250, 65, 194, 66, 176, 97, 86, 250, 64, 134, 89, 150, 97, 67, 26, 0, 22, 113, 143, 255])
+decoded_data = cbor2.loads(cbor_data)
+mapped_data = {
+    "d": "device_info",
+    "UU": "UUID",
+    "RS": "cell_RSSI",
+    "SN": "SignalNoiseRatio",
+    "PL": "PLMN",
+    "TA": "TrackingAreaCode",
+    "CI": "CellID",
+    "C": "device_timestamp",
+    "m": "measurement",
+    "T": "temperature",
+    "H": "humidity",
+    "P": "pressure",
+    "G": "gasResistance",
+    "L": "latitude",
+    "O": "longitude",
+    "b": "battery_info",
+    "V": "batteryVoltage",
+    "A": "chargingCurrent",
+    "t": "batteryTemp",
+    "S": "chargingStatus"
+}
+
+def remap_keys(data, mapping):
+    if isinstance(data, dict):
+        return {mapping.get(k, k): remap_keys(v, mapping) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [remap_keys(i, mapping) for i in data]
+    else:
+        return data
+
+# Apply remapping
+remapped_data = remap_keys(decoded_data, mapped_data)
+
+remapped_data["device_info"]["UUID"] = str(uuid.UUID(bytes=remapped_data["device_info"]["UUID"]))
+# Convert to JSON
+json_data = json.dumps(remapped_data, indent=4)
+print(json_data)
