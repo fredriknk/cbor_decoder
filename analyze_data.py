@@ -11,9 +11,14 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
+import matplotlib.pyplot as plt
 
-
-def train_and_test(X_train, y_train,X_test,y_test, model, modeltype,printcoeff = False, plot=True):
+def train_and_test(X_train, y_train, X_test, y_test, model, modeltype,
+                   printcoeff=False, plot=True, poly=None, variables=None):
+    """
+    Trains and tests a model, optionally printing coefficients
+    and plotting predictions vs. true values.
+    """
     y_train_pred = model.predict(X_train)
     y_test_pred = model.predict(X_test)
 
@@ -23,7 +28,8 @@ def train_and_test(X_train, y_train,X_test,y_test, model, modeltype,printcoeff =
     train_r2 = r2_score(y_train, y_train_pred)
     test_r2 = r2_score(y_test, y_test_pred)
     
-    if printcoeff:
+    # Optionally print coefficients if a polynomial or linear model is used
+    if printcoeff and poly is not None and variables is not None:
         feature_names = poly.get_feature_names_out(variables)
         coefficients = model.coef_
         intercept = model.intercept_
@@ -34,15 +40,23 @@ def train_and_test(X_train, y_train,X_test,y_test, model, modeltype,printcoeff =
             print(f"{feature}: {coef}")
 
     if plot:
-        plt.scatter(y_test, y_test_pred, color='blue', alpha=0.5)
+        plt.figure(figsize=(8, 6))
+        # Plot the predictions vs the true values
+        plt.scatter(y_test, y_test_pred, marker='o', alpha=0.7, edgecolors='black', label='Predictions')
+        # Plot a diagonal line for the "perfect prediction"
+        plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', label='Ideal')
         plt.xlabel('True Values')
         plt.ylabel('Predictions')
-        plt.title(f'{modeltype} Predictions vs True Values')
-        plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--')
+        plt.title(f'{modeltype} Predictions vs. True Values')
+        plt.legend()
+        plt.grid(True)
+        plt.tight_layout()
         plt.show()
 
-    print( "-----------------------------------------------------")
-    print(f"Model Type: {modeltype} Training MSE: {train_mse:.3f} Testing MSE: {test_mse:.3f} Training R²: {train_r2:.3f} Testing R²: {test_r2:.3f}")
+    print("-----------------------------------------------------")
+    print(f"Model Type: {modeltype} | "
+          f"Training MSE: {train_mse:.3f} | Testing MSE: {test_mse:.3f} | "
+          f"Training R²: {train_r2:.3f} | Testing R²: {test_r2:.3f}")
 
 
 #df_sens = pd.read_parquet("data/sensor_350457793812080.parquet")
@@ -101,7 +115,7 @@ corr_matrix = df_clean[numeric_cols].corr()
 print("Correlation matrix:")
 print(corr_matrix)
 
-
+#Linear Regression
 model = LinearRegression()
 model.fit(X_train, y_train)
 modeltype = "Linreg "
@@ -109,8 +123,8 @@ train_and_test(X_train, y_train,X_test,y_test, model, modeltype)
 
 
 # RIDGE
-ridge = Ridge(alpha=1.0)  # alpha is the regularization strength
-ridge.fit(X_train, y_train)
+model = Ridge(alpha=1.0)  # alpha is the regularization strength
+model.fit(X_train, y_train)
 modeltype = "Ridge "
 train_and_test(X_train, y_train,X_test,y_test, model, modeltype)
 
@@ -121,8 +135,7 @@ modeltype = "Lasso "
 train_and_test(X_train, y_train,X_test,y_test, model, modeltype)
 
 #Polynomial Regression
-#degree = 3  # You can adjust this to higher degrees if needed
-for degree in range(1, 3):
+for degree in range(1, 5):
     poly = PolynomialFeatures(degree=degree, include_bias=False)
     X_train_poly = poly.fit_transform(X_train)
     X_test_poly = poly.transform(X_test)
@@ -161,13 +174,11 @@ modeltype = "XGBoost"
 train_and_test(X_train, y_train,X_test,y_test, model, modeltype)
 
 
-from sklearn.svm import SVR
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score
-
-svr = SVR(kernel="rbf", C=1.0, epsilon=0.1)  # rbf is non-linear
-svr.fit(X_train, y_train)
-
-modeltype = "SVR model"
-train_and_test(X_train, y_train,X_test,y_test, model, modeltype)
+#from sklearn.svm import SVR
+#from sklearn.model_selection import train_test_split
+#from sklearn.metrics import r2_score
+#model = SVR(kernel="rbf", C=1.0, epsilon=0.1)  # rbf is non-linear
+#model.fit(X_train, y_train)
+#modeltype = "SVR model"
+#train_and_test(X_train, y_train,X_test,y_test, model, modeltype)
 
