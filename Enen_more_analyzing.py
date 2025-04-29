@@ -50,7 +50,7 @@ df_clean = df_clean.copy()          # break the link to the original
 df_clean["_time"] = pd.to_datetime(df_clean["_time"])
 
 
-start = "2025-04-09 04:00:00"
+start = "2025-04-01 04:00:00"
 test_start ="2025-04-09 04:00:00"
 stop = "2025-04-26 14:00:00"
 
@@ -180,9 +180,7 @@ preprocess = ColumnTransformer(
     transformers=[
         ("log_gas",
          Pipeline([
-             ("log", FunctionTransformer(
-                 safe_log1p, validate=False,
-                 feature_names_out="one-to-one")),
+             ("log", FunctionTransformer(safe_log1p, validate=False,feature_names_out="one-to-one")),   #  ← this line fixes it),
              ("imp", SimpleImputer(strategy="median")),
              ("sc",  StandardScaler()),
          ]),
