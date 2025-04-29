@@ -13,9 +13,9 @@ org = os.getenv("ORG")
 client = InfluxDBClient(url=url, token=token, org=org)
 query_api = client.query_api()
 #start = "2025-03-26T14:00:00Z"
-start = "2025-03-25T13:00:00Z"
+start = "2025-04-01T08:00:00Z"
 stop = dt.now().strftime("%Y-%m-%dT%H:%M:%SZ")
-
+agr = "30s"  # Aggregation interval
 envchamberQuery = f'''
 from(bucket: "iot-bucket")
   |> range(start: {start}, stop:{stop})
@@ -27,7 +27,7 @@ from(bucket: "iot-bucket")
        or r["_field"] == "NH4"
        or r["_field"] == "Temp_chamber"
   )
-  |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
+  |> aggregateWindow(every: {agr}, fn: mean, createEmpty: false)
   |> group()  
   |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
   |> yield(name: "mean")
@@ -41,7 +41,7 @@ from(bucket: "iot-bucket")
         or r["_field"] == "humidity"
         or r["_field"] == "pressure"
         or r["_field"] == "temperature")
-  //|> aggregateWindow(every: 10m, fn: mean, createEmpty: false)
+  //|> aggregateWindow(every: {agr}, fn: mean, createEmpty: false)
   |> yield(name: "mean")
 """
 filename = "data/env.parquet"
