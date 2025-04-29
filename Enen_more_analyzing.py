@@ -67,8 +67,8 @@ import pandas as pd
 
 # ────────── configuration ──────────
 BASE_COLS   = ["temperature", "gasResistance", "humidity"]
-WIN_LIST    = [10]          # 10 samples ≃ 5 min.  add 20, 40 … if desired
-EWM_SPANS   = [10]          # exponential-weighted mean/slope
+WIN_LIST    = [10,20,30,40]          # 10 samples ≃ 5 min.  add 20, 40 … if desired
+EWM_SPANS   = [10,20,30,40]          # exponential-weighted mean/slope
 DROP_NA     = True          # drop first max(window) rows
 
 def build_hysteresis_features(df: pd.DataFrame,
@@ -178,16 +178,15 @@ numeric_other = [c for c in FEATURES if c not in numeric_log]
 
 preprocess = ColumnTransformer(
     transformers=[
-        # 1️⃣ take log, then impute, then scale
         ("log_gas",
          Pipeline([
-             ("log", FunctionTransformer(safe_log1p, validate=False,feature_names_out="one-to-one")),   #  ← this line fixes it),
+             ("log", FunctionTransformer(
+                 safe_log1p, validate=False,
+                 feature_names_out="one-to-one")),
              ("imp", SimpleImputer(strategy="median")),
              ("sc",  StandardScaler()),
          ]),
          numeric_log),
-
-        # 2️⃣ everything else: impute, then scale
         ("num",
          Pipeline([
              ("imp", SimpleImputer(strategy="median")),
@@ -197,6 +196,8 @@ preprocess = ColumnTransformer(
     ],
     remainder="drop",
 )
+
+def rmse(y_true, y_pred): return np.sqrt(mean_squared_error(y_true, y_pred))
 
 models = {
     "GradientBoosting": Pipeline([
@@ -237,6 +238,24 @@ print(results)
 
 # pick the winner
 best_gb = fitted_models["GradientBoosting"]   # ← now defined
+
+
+import matplotlib.pyplot as plt
+
+# 1️⃣  Predict on the test set
+y_pred = best_gb.predict(X_test)
+
+# 2️⃣  Line plot: actual vs. predicted
+plt.figure(figsize=(10, 4))
+plt.plot(df_test["_time"], y_test, label="Actual")
+plt.plot(df_test["_time"], y_pred, label="Predicted")
+plt.title("CH₄ – Actual vs. Gradient-Boosting Prediction (test period)")
+plt.xlabel("Timestamp")
+plt.ylabel("CH₄ concentration (ppm)")
+plt.legend()
+plt.tight_layout()
+plt.show()
+
 
 import shap
 

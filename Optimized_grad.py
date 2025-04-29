@@ -50,7 +50,7 @@ df_clean = df_clean.copy()          # break the link to the original
 df_clean["_time"] = pd.to_datetime(df_clean["_time"])
 
 
-start = "2025-04-09 04:00:00"
+start = "2025-04-01 04:00:00"
 test_start ="2025-04-09 04:00:00"
 stop = "2025-04-26 14:00:00"
 
@@ -67,8 +67,8 @@ import pandas as pd
 
 # ────────── configuration ──────────
 BASE_COLS   = ["temperature", "gasResistance", "humidity"]
-WIN_LIST    = [10]          # 10 samples ≃ 5 min.  add 20, 40 … if desired
-EWM_SPANS   = [10]          # exponential-weighted mean/slope
+WIN_LIST    = [10,20,30,40]          # 10 samples ≃ 5 min.  add 20, 40 … if desired
+EWM_SPANS   = [10,20,30,40]          # exponential-weighted mean/slope
 DROP_NA     = True          # drop first max(window) rows
 
 def build_hysteresis_features(df: pd.DataFrame,
@@ -177,13 +177,15 @@ log_gas_cols = [c for c in num_cols if c.startswith("gasResistance")]
 KEEP = [
     'gasResistance_ewm10', 'temperature', 'gasResistance',
     'gasResistance_mean10', 'temperature_ewm10', 'temperature_mean10',
-    # add the humidity quartet back
-    'humidity_std10', 'humidity_mean10', 'humidity_mslope10', 'humidity_ewm10',
-    'humidity'
+    "humidity_std10","temperature_d1","gasResistance_std10","humidity_mean10"
 ]
+
+KEEP=['gasResistance_ewm40', 'gasResistance', 'temperature_mean40', 
+      'temperature_ewm40', 'temperature_mean30', 'temperature_ewm30']
 
 numeric_log   = [c for c in KEEP if c.startswith("gasResistance")]
 numeric_other = [c for c in KEEP if c not in numeric_log]
+
 
 preprocess = ColumnTransformer(
     transformers=[
@@ -212,9 +214,9 @@ tscv = TimeSeriesSplit(n_splits=5)
 
 gb_small = Pipeline([
     ("prep", preprocess),
-    ("gb",   GradientBoostingRegressor(
-                 n_estimators=800, learning_rate=0.02,
-                 max_depth=2, subsample=0.8, random_state=0)),
+    ("gb", GradientBoostingRegressor(
+            n_estimators=1200, learning_rate=0.02,
+            max_depth=3, subsample=0.8, random_state=0)),
 ])
 
 # CV and test just like before
@@ -244,9 +246,7 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 
-
 import joblib
-
 
 # ⬆︎  this line serialises the pipeline you just fitted
 joblib.dump(gb_small, "best_ch4_model.joblib")      # → returns ['best_ch4_model.joblib']
