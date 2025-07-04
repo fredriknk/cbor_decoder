@@ -1,24 +1,60 @@
 from influxdb_client import InfluxDBClient
+from influxdb_client.client.warnings import MissingPivotFunction
+import warnings
 import pandas as pd
 from dotenv import load_dotenv
 import os
-from datetime import datetime as dt
+from datetime import datetime, timedelta
+
+# 1) silence the pivot warning
+warnings.simplefilter("ignore", MissingPivotFunction)
+
 load_dotenv()
 
 # InfluxDB credentials
-url = os.getenv("HOST")
+url   = os.getenv("HOST")
 token = os.getenv("TOKEN")
-org = os.getenv("ORG")
+org   = os.getenv("ORG")
 
-client = InfluxDBClient(url=url, token=token, org=org)
+client    = InfluxDBClient(url=url, token=token, org=org)
 query_api = client.query_api()
-#start = "2025-03-26T14:00:00Z"
-start = "2025-04-01T08:00:00Z"
-stop = dt.now().strftime("%Y-%m-%dT%H:%M:%SZ")
-agr = "30s"  # Aggregation interval
-envchamberQuery = f'''
+
+def run_query(query: str) -> pd.DataFrame:
+    """
+    Run a Flux query and always return a single DataFrame.
+    If the client returns a list of DataFrames, concatenate them.
+    """
+    result = query_api.query_data_frame(query)
+    if isinstance(result, list):
+        if not result:
+            return pd.DataFrame()
+        return pd.concat(result, ignore_index=True)
+    return result
+
+def get_start_from_parquet(path: str, time_col: str = "_time", default: str = "2025-04-01T08:00:00Z") -> str:
+    """
+    If `path` exists, load it, take max(time_col) + 1μs, and format as RFC3339.
+    Otherwise return `default`.
+    """
+    if os.path.exists(path):
+        df = pd.read_parquet(path)
+        df[time_col] = pd.to_datetime(df[time_col])
+        max_ts = df[time_col].max()
+        eps = max_ts + timedelta(microseconds=1)
+        return eps.strftime("%Y-%m-%dT%H:%M:%SZ")
+    else:
+        return default
+
+# common parameters
+stop = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+agr  = "30s"
+
+# ——— 1) ENV chamber data ———
+env_file   = "data/env.parquet"
+start_env  = get_start_from_parquet(env_file)
+env_query = f'''
 from(bucket: "iot-bucket")
-  |> range(start: {start}, stop:{stop})
+  |> range(start: {start_env}, stop: {stop})
   |> filter(fn: (r) => r["_measurement"] == "env_chamber" or r["_measurement"] == "environment")
   |> filter(fn: (r) => r["_field"] == "CH4"
        or r["_field"] == "CO2"
@@ -28,58 +64,69 @@ from(bucket: "iot-bucket")
        or r["_field"] == "Temp_chamber"
   )
   |> aggregateWindow(every: {agr}, fn: mean, createEmpty: false)
-  |> group()  
   |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
   |> yield(name: "mean")
 '''
-print(envchamberQuery)
-sensorQuery = f"""
+df_new_env = run_query(env_query)
+
+if not df_new_env.empty:
+    df_old_env = pd.read_parquet(env_file) if os.path.exists(env_file) else pd.DataFrame()
+    df_env_all = pd.concat([df_old_env, df_new_env], ignore_index=True)
+    df_env_all.drop_duplicates(subset=["_time"], inplace=True)
+    df_env_all.sort_values("_time", inplace=True)
+    df_env_all.to_parquet(env_file, compression="snappy", index=False)
+    print(f"Appended {len(df_new_env)} new rows to {env_file}")
+else:
+    print("No new env_chamber data to append.")
+
+# ——— 2) SENSOR data per IMEI ———
+# Base query template (we’ll fill in start/stop/imei each time)
+sensor_query_tpl = """
 from(bucket: "iot-bucket")
-  |> range(start: {start}, stop:{stop})
+  |> range(start: {start}, stop: {stop})
   |> filter(fn: (r) => r["_measurement"] == "environment")
   |> filter(fn: (r) => r["_field"] == "gasResistance" 
         or r["_field"] == "humidity"
         or r["_field"] == "pressure"
         or r["_field"] == "temperature")
-  //|> aggregateWindow(every: {agr}, fn: mean, createEmpty: false)
+  |> filter(fn: (r) => r["imei"] == "{imei}")
+  |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
   |> yield(name: "mean")
 """
-filename = "data/env.parquet"
-start = dt.now()
-dfenv = query_api.query_data_frame(envchamberQuery)
-print(f"Query executed in {dt.now() - start} seconds")
-print(dfenv.head())
-dfenv.to_parquet(filename, compression="snappy", index=False)
 
-
-# Assume you removed pivot or only pivoted on _field, not imei
-df_all = query_api.query_data_frame(sensorQuery)
-
-# A dictionary to hold dataframes keyed by their IMEI
-dfs_by_imei = {}
-
-# Get all unique sensor IMEIs present in the DataFrame
-unique_imeis = df_all["imei"].unique()
+# Discover which IMEIs have new data
+# (we don’t care if this one returns multiple tables; run_query will flatten)
+idx_file     = "data/sensor_index.parquet"
+start_index  = get_start_from_parquet(idx_file)
+discover_q   = f"""
+from(bucket: "iot-bucket")
+  |> range(start: {start_index}, stop: {stop})
+  |> filter(fn: (r) => r["_measurement"] == "environment")
+  |> keep(columns: ["imei"])
+  |> distinct(column: "imei")
+"""
+df_imeis = run_query(discover_q)
+unique_imeis = df_imeis["imei"].dropna().unique()
 
 for imei in unique_imeis:
-    # Filter out just this sensor’s rows
-    df_sensor = df_all[df_all["imei"] == imei].copy()
-    
-    # Pivot so each measurement field (e.g., “temperature”) becomes its own column
-    df_pivoted = df_sensor.pivot(index="_time", columns="_field", values="_value")
-    
-    # Optional: remove the multi-index on columns if you pivot with more grouping keys
-    df_pivoted.reset_index(inplace=True)
-    
-    # Save to dictionary, e.g. { "350457793812262": <DataFrame>, ... }
-    dfs_by_imei[imei] = df_pivoted
-    print(df_pivoted.head())
-    # Save each sensor's data to a unique Parquet file
-    filename = f"data/sensor_{imei}.parquet"
+    path = f"data/sensor_{imei}.parquet"
+    start_imei = get_start_from_parquet(path)
+    q = sensor_query_tpl.format(start=start_imei, stop=stop, imei=imei)
+    df_new = run_query(q)
 
-    df_pivoted.to_parquet(filename, compression="snappy", index=False)
+    if df_new.empty:
+        print(f"No new data for IMEI {imei}")
+        continue
 
-    print(f"Saved sensor {imei} data to {filename}")
+    df_old = pd.read_parquet(path) if os.path.exists(path) else pd.DataFrame()
+    df_all = pd.concat([df_old, df_new], ignore_index=True)
+    df_all.drop_duplicates(subset=["_time"], inplace=True)
+    df_all.sort_values("_time", inplace=True)
+    df_all.to_parquet(path, compression="snappy", index=False)
+    print(f"Appended {len(df_new)} rows to {path}")
 
-print(f"Query executed in {dt.now() - start} seconds")
-
+# Update the index file so next run “discover” starts from now
+pd.DataFrame({
+    "imei": unique_imeis,
+    "_time": datetime.utcnow()
+}).to_parquet(idx_file, index=False)
