@@ -94,10 +94,10 @@ def predict_all(df_train, df_wild, model, model_name, variables, poly=None, axes
 
      # 5) Gas Resistance
     #axes[2].plot(df_train['_time'], df_train['gasResistance'], label='Gas Resistance')
-    axes[2].plot(df_wild['_time'],  df_wild['gasResistance'],  label=filename)
-    axes[2].set_ylabel('Gas Resistance')
-    axes[2].set_xlabel('Time')
-    axes[2].legend()
+    #axes[2].plot(df_wild['_time'],  df_wild['gasResistance'],  label=filename)
+    #axes[2].set_ylabel('Gas Resistance')
+    #axes[2].set_xlabel('Time')
+    #axes[2].legend()
     if fig is not None:
         show_plots()
         
@@ -105,7 +105,7 @@ def predict_all(df_train, df_wild, model, model_name, variables, poly=None, axes
     
 def init_plot():
     # Create subplots: CH4 preds + each variable
-    fig, axes = plt.subplots(3, 1, figsize=(10, 14), sharex=True)
+    fig, axes = plt.subplots(2, 1, figsize=(10, 14), sharex=True)
     return fig, axes
 
 def show_plots():
@@ -114,41 +114,50 @@ def show_plots():
     plt.show()
     
 
-def plot_stdev(axes, stdev_df,nr=None):
-    # 3) Mean / Std across sensors per bin (skip NaNs)
-    pred_mean = stdev_df.mean(axis=1, skipna=True)
-    pred_std  = stdev_df.std(axis=1,  ddof=1, skipna=True)
-    pred_n    = stdev_df.count(axis=1)
+def plot_stdev(ax, df, label='Ensemble (10-min)', min_models=None, box_loc=(0.99, 0.02)):
+    """
+    ax: a matplotlib axis
+    df: DataFrame indexed by time, columns = sensors (numeric)
+    min_models: minimum contributing sensors per bin; default = max(2, ncols//2)
+    """
+    # Ensure numeric (drop non-numeric columns if any sneaked in)
+    df = df.select_dtypes(include=[np.number])
 
-    # (Optional) keep bins with at least k sensors contributing
-    k = max(2, len(train_series) // 2)   # e.g., at least half
-    mask = pred_n >= k
-    pred_mean = pred_mean[mask]
-    pred_std  = pred_std[mask]
-    pred_n    = pred_n[mask]
+    ncols = df.shape[1]
+    if min_models is None:
+        min_models = max(2, ncols // 2) if ncols >= 2 else 1
 
-    # 4) Plot on your existing predictions axis
-    axes[nr].plot(pred_mean.index, pred_mean.values, linewidth=2.5, label='Ensemble mean (10-min)')
-    axes[nr].fill_between(pred_mean.index,
-                        (pred_mean - pred_std).values,
-                        (pred_mean + pred_std).values,
-                        alpha=0.2, label='±1σ (10-min bins)')
-    # --- Average std dev annotation ---
-    avg_std = float(pred_std.mean())                          # simple mean across bins
-    med_std = float(pred_std.median())                        # median, often more robust
-    # (optional) sensor-count–weighted average σ:
-    wavg_std = float((pred_std * pred_n).sum() / pred_n.sum())
+    # Per-time-bin stats across sensors
+    pred_n    = df.count(axis=1)                         # sensors contributing each bin
+    mask      = pred_n >= min_models
+    pred_mean = df.mean(axis=1, skipna=True)[mask]
+    # Use ddof=1 only if at least 2 sensors contribute; otherwise ddof=0
+    pred_std  = df.std(axis=1, ddof=1, skipna=True)[mask]
+    if (min_models == 1) or (pred_n.max() < 2):
+        pred_std = df.std(axis=1, ddof=0, skipna=True)[mask]
 
-    # Put a small textbox on the plot
-    axes[nr].text(
-        0.99, 0.02,
-        f"Avg σ: {avg_std:.3g}\nMed σ: {med_std:.3g}\nW-Avg σ: {wavg_std:.3g}",
-        transform=axes[1].transAxes,
-        ha='right', va='bottom',
-        fontsize=9,
-        bbox=dict(boxstyle='round,pad=0.3', fc='white', ec='0.7', alpha=0.8),
-    )
-    axes[nr].legend()
+    # Plot
+    ax.plot(pred_mean.index, pred_mean.values, linewidth=2.5, label=f'{label} mean')
+    ax.fill_between(pred_mean.index,
+                    (pred_mean - pred_std).values,
+                    (pred_mean + pred_std).values,
+                    alpha=0.2, label='±1σ')
+
+    # Average σ box
+    avg_std  = float(pred_std.mean()) if len(pred_std) else float('nan')
+    med_std  = float(pred_std.median()) if len(pred_std) else float('nan')
+    wavg_std = float(((pred_std * pred_n[mask]).sum() / pred_n[mask].sum())) if pred_n[mask].sum() else float('nan')
+
+    ax.text(box_loc[0], box_loc[1],
+            f"Avg σ: {avg_std:.3g}\nMed σ: {med_std:.3g}\nW-Avg σ: {wavg_std:.3g}",
+            transform=ax.transAxes, ha='right', va='bottom',
+            fontsize=9, bbox=dict(boxstyle='round,pad=0.3', fc='white', ec='0.7', alpha=0.8))
+    ax.legend()
+
+def plot_ground_truth(ax, df, label='True CH4'):
+    ax.plot(df['CH4'], 'k.', alpha=0.3, markersize=4, label=label)
+    ax.set_ylabel('CH4')
+    ax.legend()
 
 
 
@@ -186,8 +195,8 @@ if __name__ == '__main__':
         train_end = pd.Timestamp('2025-08-07 12:00:00')
         test_start = pd.Timestamp('2025-08-21 12:00:00')
         #test_end = pd.Timestamp('2025-08-14 23:59:59')
-        degrees = 4  
-        vars_orig = ['temperature', 'gasResistance', 'humidity']
+        degrees = 2  
+        vars_orig = ['temperature', 'gasResistance']#, 'humidity']
 
         env_file    = 'data/env.parquet'
 
@@ -352,12 +361,14 @@ if __name__ == '__main__':
     
     train_df = pd.concat(train_series, axis=1)  # columns = sensors, index = 10-min bins
     train_df.index.name = '_time'
-    plot_stdev(axes, train_df,nr=0)
+    plot_stdev(axes[0], train_df, label='Train ensemble')
+    
+    
     
     pred_df = pd.concat(wild_series, axis=1)  # columns = sensors, index = 10-min bins
     pred_df.index.name = '_time'
     pred_df = pred_df[pred_df.index >= test_start]
-    plot_stdev(axes, pred_df,nr=1)
+    plot_stdev(axes[1], pred_df,  label='Wild ensemble')
     
     show_plots()
     
