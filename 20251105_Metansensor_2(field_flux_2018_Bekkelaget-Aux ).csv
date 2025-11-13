@@ -1,0 +1,80 @@
+20251105_Metansensor_2,,,,,,,ppm CO2,ppm CH4,ppm N2O,,,,,,,,,,,,
+,,,,,,NL,390.8,1.93,0.54,,,,,,,,,,,,
+,,,,,,OH,10000,10000,151,,,,,,,,,,,,
+,,,,,,NL avg pa,64340,37823,40309333,,,,,,,,,,,,
+,,,,,,OH avg pa,1761595,187281113,2723944227,,,,,,,,,,,,
+,,,,,,%CV NL,2.59,0.71,0.79,,,,,,,,,,,,
+,,,,,,%CV OH,1.83,0.03,0.27,,,,,,,,,,,,
+,,,,,,ppm/pa NL,6.07E-03,5.10E-05,1.34E-08,,,,,,,,,,,,
+,,,,,,ppm/pa OH,5.68E-03,5.34E-05,5.54E-08,,,,,,,,,,,,
+,,,,,,ppm/pa avg,5.88E-03,5.22E-05,3.44E-08,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+Date,Time,Sample Id,File Name,Method Name,User Name,luft,CO2,CH4,N2O,,prøvenr,Datestamp,ppm CO2,ppm CH4,VialNr,,,Datestamp,ppm CO2,ppm CH4,VialNr
+11/5/2025,11:49:05,1,D:\Users\Tingvold\Data\Cal_20251105_Metansensor_2_001.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,340918,67008,37619,40965419,new low,1,,394,2,,,,,,,
+11/5/2025,11:53:59,2,D:\Users\Tingvold\Data\Cal_20251105_Metansensor_2_002.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,560557,1741709,187171724,2736428935,old high,2,,10233,9773,,,,,,,
+11/5/2025,11:58:53,1,D:\Users\Tingvold\Data\20251105_Metansensor_2_001.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,140091045,93964,1052300,32390506,,1,10/15/2025 15:22,552,55,1,15-Oct,15:22,10/15/25 15:22,552,55,1
+11/5/2025,12:03:50,2,D:\Users\Tingvold\Data\20251105_Metansensor_2_002.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,136083582,95040,823706,25650899,,2,10/15/2025 15:22,558,43,2,15-Oct,15:22,10/15/25 15:22,558,43,2
+11/5/2025,12:08:43,3,D:\Users\Tingvold\Data\20251105_Metansensor_2_003.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,134806007,86410,1448115,28784694,,3,10/16/2025 7:48,508,76,3,16-Oct,07:48,10/16/25 07:48,508,76,3
+11/5/2025,12:13:39,4,D:\Users\Tingvold\Data\20251105_Metansensor_2_004.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,139616415,87439,1561124,28460326,,4,10/16/2025 7:48,514,82,4,16-Oct,07:48,10/16/25 07:48,514,82,4
+11/5/2025,12:18:34,5,D:\Users\Tingvold\Data\20251105_Metansensor_2_005.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,138738531,87503,1294620,25359054,,5,10/16/2025 15:11,514,68,5,16-Oct,15:11,10/16/25 15:11,514,68,5
+11/5/2025,12:23:30,6,D:\Users\Tingvold\Data\20251105_Metansensor_2_006.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,139121329,87702,1498058,27953209,,6,10/16/2025 15:11,515,78,6,16-Oct,15:11,10/16/25 15:11,515,78,6
+11/5/2025,12:28:25,7,D:\Users\Tingvold\Data\20251105_Metansensor_2_007.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,139347739,98317,2870208,28880032,,7,10/17/2025 9:21,578,150,7,17-Oct,09:21,10/17/25 09:21,578,150,7
+11/5/2025,12:33:20,8,D:\Users\Tingvold\Data\20251105_Metansensor_2_008.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,133542257,92275,2062261,24348867,,8,10/17/2025 9:21,542,108,8,17-Oct,09:21,10/17/25 09:21,542,108,8
+11/5/2025,12:38:15,9,D:\Users\Tingvold\Data\20251105_Metansensor_2_009.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,133489742,89576,1168632,17898690,,9,10/17/2025 16:26,526,61,9,17-Oct,16:26,10/17/25 16:26,526,61,9
+11/5/2025,12:43:10,10,D:\Users\Tingvold\Data\20251105_Metansensor_2_010.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,139192382,496,2315082,28449297,,10,10/17/2025 16:26,3,121,10,17-Oct,16:26,,,,
+11/5/2025,12:48:05,3,D:\Users\Tingvold\Data\Cal_20251105_Metansensor_2_003.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,296530,65040,37460,40195064,new low,3,,382,2,,,,,,,
+11/5/2025,12:53:00,4,D:\Users\Tingvold\Data\Cal_20251105_Metansensor_2_004.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,559274,1742898,187292579,2729869289,old high,4,,10240,9779,,,,,,,
+11/5/2025,12:57:54,11,D:\Users\Tingvold\Data\20251105_Metansensor_2_011.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,132846809,83204,745881,32101389,,11,10/18/2025 7:59,489,39,11,18-Oct,07:59,10/18/25 07:59,489,39,11
+11/5/2025,13:02:49,12,D:\Users\Tingvold\Data\20251105_Metansensor_2_012.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,132760001,85496,766076,23020598,,12,10/18/2025 7:59,502,40,12,18-Oct,07:59,10/18/25 07:59,502,40,12
+11/5/2025,13:07:44,13,D:\Users\Tingvold\Data\20251105_Metansensor_2_013.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,133656193,81423,874163,24382599,,13,10/18/2025 15:38,478,46,13,18-Oct,15:38,10/18/25 15:38,478,46,13
+11/5/2025,13:12:37,14,D:\Users\Tingvold\Data\20251105_Metansensor_2_014.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,135824557,85052,1130142,26578873,,14,10/18/2025 15:38,500,59,14,18-Oct,15:38,10/18/25 15:38,500,59,14
+11/5/2025,13:17:32,15,D:\Users\Tingvold\Data\20251105_Metansensor_2_015.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,138814762,101526,2391423,28071257,,15,10/19/2025 8:22,597,125,15,19-Oct,08:22,10/19/25 08:22,597,125,15
+11/5/2025,13:22:27,16,D:\Users\Tingvold\Data\20251105_Metansensor_2_016.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,135984116,105010,2267466,28210795,,16,10/19/2025 8:22,617,118,16,19-Oct,08:22,10/19/25 08:22,617,118,16
+11/5/2025,13:27:21,17,D:\Users\Tingvold\Data\20251105_Metansensor_2_017.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,138450330,97547,2161287,28270599,,17,10/19/2025 15:30,573,113,17,19-Oct,15:30,10/19/25 15:30,573,113,17
+11/5/2025,13:32:16,18,D:\Users\Tingvold\Data\20251105_Metansensor_2_018.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,131074597,89925,180722,9492616,,18,10/19/2025 15:30,528,9,18,19-Oct,15:30,10/19/25 15:30,528,9,18
+11/5/2025,13:37:10,19,D:\Users\Tingvold\Data\20251105_Metansensor_2_019.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,137050855,114150,3241363,28876595,,19,10/20/2025 8:20,671,169,19,20-Oct,08:20,10/20/25 08:20,671,169,19
+11/5/2025,13:42:08,20,D:\Users\Tingvold\Data\20251105_Metansensor_2_020.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,140352040,107463,3048060,28660567,,20,10/20/2025 8:20,631,159,20,20-Oct,08:20,10/20/25 08:20,631,159,20
+11/5/2025,13:47:02,5,D:\Users\Tingvold\Data\Cal_20251105_Metansensor_2_005.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,289383,63942,38033,39981994,new low,5,,376,2,,,,,,,
+11/5/2025,13:51:55,6,D:\Users\Tingvold\Data\Cal_20251105_Metansensor_2_006.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,582877,1811924,187381004,2721015331,old high,6,,10646,9783,,,,,,,
+11/5/2025,13:56:52,21,D:\Users\Tingvold\Data\20251105_Metansensor_2_021.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,140630360,88818,1258381,32109285,,21,10/20/2025 15:30,522,66,21,20-Oct,15:30,10/20/25 15:30,522,66,21
+11/5/2025,14:01:46,22,D:\Users\Tingvold\Data\20251105_Metansensor_2_022.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,136244120,87324,1141987,25605613,,22,10/20/2025 15:30,513,60,22,20-Oct,15:30,10/20/25 15:30,513,60,22
+11/5/2025,14:06:41,23,D:\Users\Tingvold\Data\20251105_Metansensor_2_023.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,130812503,79566,851619,27993149,,23,10/21/2025 8:28,467,44,23,21-Oct,08:28,10/21/25 08:28,467,44,23
+11/5/2025,14:11:34,24,D:\Users\Tingvold\Data\20251105_Metansensor_2_024.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,137366745,88647,330876,17591817,,24,10/21/2025 8:28,521,17,24,21-Oct,08:28,10/21/25 08:28,521,17,24
+11/5/2025,14:16:28,25,D:\Users\Tingvold\Data\20251105_Metansensor_2_025.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,128330001,74220,39633,10398352,,25,10/21/2025 15:55,436,2,25,21-Oct,15:55,10/21/25 15:55,436,2,25
+11/5/2025,14:21:23,26,D:\Users\Tingvold\Data\20251105_Metansensor_2_026.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,132675151,77989,358857,26569932,,26,10/21/2025 15:55,458,19,26,21-Oct,15:55,10/21/25 15:55,458,19,26
+11/5/2025,14:26:18,27,D:\Users\Tingvold\Data\20251105_Metansensor_2_027.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,136843419,415,153453,26798816,,27,10/22/2025 8:12,2,8,27,22-Oct,08:12,,,,
+11/5/2025,14:31:11,28,D:\Users\Tingvold\Data\20251105_Metansensor_2_028.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,141002185,89942,423540,22585039,,28,10/22/2025 8:12,528,22,28,22-Oct,08:12,10/22/25 08:12,528,22,28
+11/5/2025,14:36:09,29,D:\Users\Tingvold\Data\20251105_Metansensor_2_029.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,137243137,99657,658728,14156230,,29,10/22/2025 15:33,586,34,29,22-Oct,15:33,10/22/25 15:33,586,34,29
+11/5/2025,14:41:03,30,D:\Users\Tingvold\Data\20251105_Metansensor_2_030.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,142001743,101028,1056503,18064285,,30,10/22/2025 15:33,594,55,30,22-Oct,15:33,10/22/25 15:33,594,55,30
+11/5/2025,14:45:59,7,D:\Users\Tingvold\Data\Cal_20251105_Metansensor_2_007.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,290059,63826,38066,40403772,new low,7,,375,2,,,,,,,
+11/5/2025,14:50:54,8,D:\Users\Tingvold\Data\Cal_20251105_Metansensor_2_008.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,565426,1756679,187274862,2718837330,old high,8,,10321,9778,,,,,,,
+11/5/2025,14:55:47,31,D:\Users\Tingvold\Data\20251105_Metansensor_2_031.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,137899805,264,912041,43213231,,31,10/23/2025 8:06,2,48,31,23-Oct,08:06,,,,
+11/5/2025,15:00:43,32,D:\Users\Tingvold\Data\20251105_Metansensor_2_032.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,141661202,133750,2604014,27586696,,32,10/23/2025 8:06,786,136,32,23-Oct,08:06,10/23/25 08:06,786,136,32
+11/5/2025,15:05:38,33,D:\Users\Tingvold\Data\20251105_Metansensor_2_033.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,143383548,127637,3224810,28064863,,33,10/23/2025 9:09,750,168,33,23-Oct,09:09,10/23/25 09:09,750,168,33
+11/5/2025,15:10:32,34,D:\Users\Tingvold\Data\20251105_Metansensor_2_034.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,133363496,128412,4227047,31605555,,34,10/23/2025 9:09,754,221,34,23-Oct,09:09,10/23/25 09:09,754,221,34
+11/5/2025,15:15:25,35,D:\Users\Tingvold\Data\20251105_Metansensor_2_035.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,139956801,135830,4559405,31650842,,35,10/23/2025 10:02,798,238,35,23-Oct,10:02,10/23/25 10:02,798,238,35
+11/5/2025,15:20:20,36,D:\Users\Tingvold\Data\20251105_Metansensor_2_036.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,143152949,135954,4598514,31403797,,36,10/23/2025 10:02,799,240,36,23-Oct,10:02,10/23/25 10:02,799,240,36
+11/5/2025,15:25:15,37,D:\Users\Tingvold\Data\20251105_Metansensor_2_037.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,140402133,164870,4332191,30750031,,37,10/23/2025 11:01,969,226,37,23-Oct,11:01,10/23/25 11:01,969,226,37
+11/5/2025,15:30:11,38,D:\Users\Tingvold\Data\20251105_Metansensor_2_038.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,133821972,127002,797740,11525436,,38,10/23/2025 11:01,746,42,38,23-Oct,11:01,10/23/25 11:01,746,42,38
+11/5/2025,15:35:07,39,D:\Users\Tingvold\Data\20251105_Metansensor_2_039.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,144378310,113563,1577324,20648764,,39,10/23/2025 12:03,667,82,39,23-Oct,12:03,10/23/25 12:03,667,82,39
+11/5/2025,15:40:04,40,D:\Users\Tingvold\Data\20251105_Metansensor_2_040.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,137899918,122238,1588081,19775354,,40,10/23/2025 12:03,718,83,40,23-Oct,12:03,10/23/25 12:03,718,83,40
+11/5/2025,15:44:56,9,D:\Users\Tingvold\Data\Cal_20251105_Metansensor_2_009.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,276810,61429,37603,40125210,new low,9,,361,2,,,,,,,
+11/5/2025,15:49:50,10,D:\Users\Tingvold\Data\Cal_20251105_Metansensor_2_010.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,552042,1720124,187276068,2724032165,old high,10,,10106,9778,,,,,,,
+11/5/2025,15:54:46,41,D:\Users\Tingvold\Data\20251105_Metansensor_2_041.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,139808012,145531,5486652,35974681,,41,10/23/2025 13:04,855,286,41,23-Oct,13:04,10/23/25 13:04,855,286,41
+11/5/2025,15:59:39,42,D:\Users\Tingvold\Data\20251105_Metansensor_2_042.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,131775584,134101,1004459,19990694,,42,10/23/2025 13:04,788,52,42,23-Oct,13:04,10/23/25 13:04,788,52,42
+11/5/2025,16:04:34,43,D:\Users\Tingvold\Data\20251105_Metansensor_2_043.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,133195006,143,916490,16228654,,43,10/23/2025 14:04,1,48,43,23-Oct,14:04,,,,
+11/5/2025,16:09:30,44,D:\Users\Tingvold\Data\20251105_Metansensor_2_044.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,138086315,126175,3293561,25178285,,44,10/23/2025 14:04,741,172,44,23-Oct,14:04,10/23/25 14:04,741,172,44
+11/5/2025,16:14:25,45,D:\Users\Tingvold\Data\20251105_Metansensor_2_045.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,141661585,124442,4230524,31445994,,45,10/23/2025 15:03,731,221,45,23-Oct,15:03,10/23/25 15:03,731,221,45
+11/5/2025,16:19:20,46,D:\Users\Tingvold\Data\20251105_Metansensor_2_046.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,134846363,129043,1533637,15159799,,46,10/23/2025 15:03,758,80,46,23-Oct,15:03,10/23/25 15:03,758,80,46
+11/5/2025,16:24:16,47,D:\Users\Tingvold\Data\20251105_Metansensor_2_047.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,137550092,112591,1705422,20331167,,47,10/23/2025 16:02,662,89,47,23-Oct,16:02,10/23/25 16:02,662,89,47
+11/5/2025,16:29:12,48,D:\Users\Tingvold\Data\20251105_Metansensor_2_048.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,136174265,103006,1266220,16992486,,48,10/23/2025 16:02,605,66,48,23-Oct,16:02,10/23/25 16:02,605,66,48
+11/5/2025,16:34:07,49,D:\Users\Tingvold\Data\20251105_Metansensor_2_049.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,141557379,220,4358867,31252280,,49,10/24/2025 17:02,1,228,49,24-Oct,17:02,,,,
+11/5/2025,16:39:02,50,D:\Users\Tingvold\Data\20251105_Metansensor_2_050.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,138894488,123937,2028936,19568503,,50,10/25/2025 17:02,728,106,50,25-Oct,17:02,10/25/25 17:02,728,106,50
+11/5/2025,16:43:58,11,D:\Users\Tingvold\Data\Cal_20251105_Metansensor_2_011.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,299985,64792,38154,40184538,new low,11,,381,2,,,,,,,
+11/5/2025,16:48:50,12,D:\Users\Tingvold\Data\Cal_20251105_Metansensor_2_012.dat,D:\Methods\field_flux_2018_Bekkelaget.met,System,580980,1796236,187290440,2713482314,old high,12,,10554,9779,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,

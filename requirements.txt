@@ -1,0 +1,6 @@
+influxdb_client
+dotenv
+numpy
+pandas
+pyarrow
+fastparquet

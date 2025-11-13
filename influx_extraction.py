@@ -48,7 +48,7 @@ def get_start_from_parquet(path: str, time_col: str = "_time", default: str = "2
 # common parameters
 stop = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
 agr  = "30s"
-
+print(f"Extraction run at {stop} with aggregation {agr}")
 # ——— 1) ENV chamber data ———
 env_file   = "data/env.parquet"
 start_env  = get_start_from_parquet(env_file)
